@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>My JSTree Example</title>
+	<title>FileManager</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="dist/themes/default/style.min.css" />
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
     <script src="dist/jstree.min.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
 	<div id="jstree"></div>
+    <footer>
+        <button onclick="listSelectedNodes()">删除</button>
+    </footer>
 </body>
 </html>

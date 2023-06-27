@@ -2,30 +2,36 @@
 这是一个S3树的类
 """
 import boto3
+from typing import Optional
+from petrel_client.client import Client
+import json
 
 class S3:
-    def __init__(self, ak, sk) -> None:
-        self.ak = ak
-        self.sk = sk
-        # 默认连接
-        self.s3 = self.connect()
+    def __init__(self) -> None:
+        self.client = Client()
     
-    def connect(self):
-        s3 = boto3.client(
-            's3',
-            aws_access_key_id=self.ak,
-            aws_secret_access_key=self.sk
-        )
-        try:
-            response = s3.list_buckets()
-            print('=====连接成功=====')
-        except Exception as e:
-            print(e)
-        return s3
+    def list(path: str):
+        return list(self.client.list(path))
     
-    def listFiles(self):
-        pass
+    def walk(self, path:str, suffix: Optional[str]=None):
+        if not path.endswith('/'):
+            path += '/'
+        dir_name = path.split('/')[-2]  # 获取当前文件夹的名称
+        file_tree = {"text": dir_name, "children": []}
+        dir_list = self.client.list(path)
+        for sub_path in dir_list:
+            if sub_path.endswith('/'):
+                sub_tree = self.walk(path + sub_path, suffix)
+                if sub_tree["children"]:
+                    file_tree["children"].append(sub_tree)
+            else:
+                if suffix is None or sub_path.endswith(suffix):
+                    file_tree["children"].append({"text": sub_path})
+        return file_tree
+                
     
 if __name__ == '__main__':
-    instance = S3('CKGEB5PPRMCTTCT8H3OE', 'VcDvkuKFNORfChhJEsNLRODTeMSRxpppMrLnSTP2')
+    s3 = S3()
+    json_str = json.dumps({'data':s3.walk('hdd:s3://opennlplab_hdd/llm_it/0420')})
+    print(json_str)
     
