@@ -8,11 +8,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
     <script src="dist/jstree.min.js"></script>
     <script src="script.js"></script>
+    <script src="tree.js"></script>
 </head>
 <body>
-	<div id="jstree"></div>
-    <footer>
-        <button onclick="listSelectedNodes()">删除</button>
-    </footer>
+    <div class="container">
+        <div class="up">
+            <div id="jstree"></div>
+        </div>
+        <div class="bottom">
+            <div class="left">
+                <div class="left-top">
+                    <input id="root" type="text" placeholder="请输入根路径(如：hdd:s3://opennlplab_hdd/llm_it/0420/sft_7132k_moss_remove_metains/)"/>
+                </div>
+                <div class="left-bottom">
+                    <input id="repath" type="text" placeholder="请输入筛选正则式（如：/#/^sft/^1/^optimizer）"/>
+                </div>
+            </div>
+            <div class="right">
+                <div class="right-top">
+                    <button onclick="generateTree()">渲染</button>
+                </div>
+                <div class="right-middle">
+                    <button onclick="filterNodes()">过滤</button>
+                </div>
+                <div class="right-bottom">
+                    <button onclick="deleteConfirmation()">删除</button>
+                </div> 
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -27,11 +27,4 @@ class S3:
             else:
                 if suffix is None or sub_path.endswith(suffix):
                     file_tree["children"].append({"text": sub_path})
-        return file_tree
-                
-    
-if __name__ == '__main__':
-    s3 = S3()
-    json_str = json.dumps({'data':s3.walk('hdd:s3://opennlplab_hdd/llm_it/0420')})
-    print(json_str)
-    
+        return file_tree    

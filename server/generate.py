@@ -2,11 +2,11 @@ import os
 from s3 import S3
 import json
 
-# 定义生成的 JavaScript 代码
-s3 = S3()
-core = json.dumps(s3.walk('hdd:s3://opennlplab_hdd/llm_it/0420'))
 
-js_code = '''
+def generate(path: str):
+    s3 = S3()
+    core = json.dumps(s3.walk(path))
+    js_code = '''
 $(function () {{
     $('#jstree').jstree({{
         'plugins': ['themes', 'html_data', 'checkbox'],
@@ -20,7 +20,7 @@ $(function () {{
             var subnode = data.instance.get_node(children[i]);
             var num = parseInt(subnode.text);
             if((num+1) % 3000 === 0){{
-               data.instance.deselect_node(subnode.id);
+            data.instance.deselect_node(subnode.id);
             }} else {{
                 var child = data.instance.get_node(subnode).children;
                 for(var j=0; j<child.length; j++) {{
@@ -35,10 +35,8 @@ $(function () {{
         }}
     }});
 }});
-'''.format(core=core)
-
-# 保存 JavaScript 代码到文件
-with open('../ui/script.js', 'w') as f:
-    f.write(js_code)
-
-print('JavaScript 代码已保存到文件 script.js')
+    '''.format(core=core)
+    # 保存 JavaScript 代码到文件
+    with open('../ui/tree.js', 'w') as f:
+        f.write(js_code)
+    print('JavaScript 代码已保存到文件 tree.js')
