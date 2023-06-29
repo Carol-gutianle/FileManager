@@ -27,6 +27,7 @@ html, body {
 }
 
 .left-top,
+.left-middle,
 .left-bottom {
   flex: 1;
   justify-content: center;
@@ -44,7 +45,8 @@ html, body {
 
 .right-top,
 .right-middle,
-.right-bottom {
+.right-bottom,
+.right-extra {
   width: 100%;
   flex: 1;
   display: flex;
@@ -53,6 +55,7 @@ html, body {
 }
 
 .left-top input,
+.left-middle input,
 .left-bottom input {
   width: 90%;
   height: 30%;
@@ -60,7 +63,8 @@ html, body {
 
 .right-top button,
 .right-middle button,
-.right-bottom button {
+.right-bottom button,
+.right-extra button {
   width: 80%;
   height: 50%;
   background-color: #4caf50;
@@ -72,7 +76,8 @@ html, body {
 
 .right-top button:hover,
 .right-middle button:hover,
-.right-bottom button:hover {
+.right-bottom button:hover,
+.right-extra button:hover {
   background-color: #3e8e41;
 }
 

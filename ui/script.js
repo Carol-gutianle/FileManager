@@ -6,6 +6,7 @@
 const baseUrl = 'http://127.0.0.1:5000'
 let rt = '';
 let repath = '';
+let level = '';
 
 function handleRoot(event) {
     rt = event.target.value;
@@ -15,11 +16,17 @@ function handleRepath(event) {
     repath = event.target.value;
 }
 
+function handleLevel(event) {
+  level = event.target.value;
+}
+
 window.addEventListener('DOMContentLoaded', function() {
     const rootPath = document.querySelector("#root");
     const regPath = document.querySelector('#repath');
+    const levelVal = document.querySelector('#level');
     rootPath.addEventListener("input", handleRoot);
     regPath.addEventListener("input", handleRepath);
+    levelVal.addEventListener("input", handleLevel);
 })
 
 /**
@@ -27,6 +34,7 @@ window.addEventListener('DOMContentLoaded', function() {
  * 示例：hdd:s3://opennlplab_hdd/llm_it/0420/sft_7132k_moss_remove_metains/
  */
 function generateTree() {
+    showLoading();
     const url = baseUrl + '/getTree';
     const xhr = new XMLHttpRequest();
     const params = new URLSearchParams();
@@ -38,11 +46,12 @@ function generateTree() {
     );
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
+            hideLoading();
             console.log(xhr.responseText);
+            location.reload();
         }
     }
     xhr.send(params);
-    location.reload();
 }
 
 /**
@@ -57,7 +66,6 @@ function filterNodes() {
         var nodeInfo = $('#jstree').jstree(true).get_node(node.id);
         if (level === 0 || (level < searchArray.length && new RegExp(searchArray[level]).test(nodeInfo.text))) {
           if (level === searchArray.length - 1) {
-            console.log('选中',node.id)
             $('#jstree').jstree('select_node', node.id);
           } else {
             var children = Array.isArray(node.children) ? node.children : [node.children];
@@ -151,4 +159,35 @@ function deleteConfirmation() {
     dialog.appendChild(confirmButton);
     dialog.appendChild(cancelButton);
     document.body.appendChild(dialog);
+}
+
+/**
+ * 规则：控制隐式规则
+ */
+function digitMatch() {
+  const rootNode = $('#jstree').jstree(true).get_node('#');
+  function matchNode(node, curr, target) {
+    const nodeInfo = $('#jstree').jstree(true).get_node(node.id);
+    if (curr === target) {
+      const num = parseInt(node.text);
+      if ((num + 1) % 3000 === 0) {
+        $('#jstree').jstree('deselect_node', node.id);
+      }
+    } else if (curr < target) {
+      const children = node.children;
+      for (let i = 0; i < children.length; i++) {
+        const childNode = $('#jstree').jstree(true).get_node(children[i]);
+        matchNode(childNode, curr + 1, target);
+      }
+    } else {
+      return;
+    }
   }
+  matchNode(rootNode, 0, parseInt(level));
+}
+function showLoading() {
+  $('#loading').show();
+}
+function hideLoading() {
+  $('#loading').hide();
+}

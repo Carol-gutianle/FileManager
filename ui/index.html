@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
     <script src="dist/jstree.min.js"></script>
-    <script src="script.js"></script>
-    <script src="tree.js"></script>
 </head>
 <body>
     <div class="container">
@@ -20,8 +18,11 @@
                 <div class="left-top">
                     <input id="root" type="text" placeholder="请输入根路径(如：hdd:s3://opennlplab_hdd/llm_it/0420/sft_7132k_moss_remove_metains/)"/>
                 </div>
-                <div class="left-bottom">
+                <div class="left-middle">
                     <input id="repath" type="text" placeholder="请输入筛选正则式（如：/#/^sft/^1/^optimizer）"/>
+                </div>
+                <div class="left-bottom">
+                    <input id="level" type="text" placeholder="请输入层数">
                 </div>
             </div>
             <div class="right">
@@ -34,8 +35,19 @@
                 <div class="right-bottom">
                     <button onclick="deleteConfirmation()">删除</button>
                 </div> 
+                <div class="right-extra">
+                    <button onclick="digitMatch()">规则</button>
+                </div>
             </div>
         </div>
     </div>
+    <div id="loading" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div>Loading...</div>
+    </div>
+    <script src="tree.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
